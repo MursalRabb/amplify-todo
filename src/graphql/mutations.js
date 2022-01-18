@@ -1,8 +1,6 @@
+/* tslint:disable */
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
-
-// GraphQL endpoint: https://tkmoioj7jfadnkmavpm4esncby.appsync-api.us-east-1.amazonaws.com/graphql
-// GraphQL API KEY: da2-dq7oe5btkjhv5a4or57cwf5muu
 
 export const createTodo = /* GraphQL */ `
   mutation CreateTodo(
@@ -46,6 +44,3 @@ export const deleteTodo = /* GraphQL */ `
     }
   }
 `;
-
-
-

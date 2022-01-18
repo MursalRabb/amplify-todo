@@ -3,9 +3,16 @@ import Todo from './components/Todo'
 
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import './components/static/style.css'
+import Amplify from 'aws-amplify'
+
+import { API, graphqlOperation } from 'aws-amplify'
+import {listTodos} from './graphql/queries'
 
 import Dialog from './components/Dialog'
 import DetailTask from './components/DetailTask'
+
+import awsExports from "./aws-exports";
+Amplify.configure(awsExports);
 
 
 
@@ -15,6 +22,22 @@ const App = () => {
 
   const [create, setCreate] = React.useState(false)
   const [viewTask, setViewTask] = React.useState({task: null, view: false})
+  
+  const [tasks, setTasks] = React.useState([])
+
+  React.useEffect(
+        ()=>{
+            async function fetchTodos() {
+                try {
+                  const todoData = await API.graphql(graphqlOperation(listTodos))
+                  const todos = todoData.data.listTodos.items
+                  setTasks(todos)
+                } catch (err) { console.log(err) }
+              }
+            fetchTodos()
+        },
+        []
+    )
 
   const DetailTaskRenderer = () => {
     if (viewTask.view === true) {
@@ -33,10 +56,21 @@ const App = () => {
 
   return (
     <div className='main'>
-      <Todo handleDialog={()=>setCreate(true)} handleViewTask={handleViewTask}/>
+      <Todo 
+      tasks={tasks}
+      handleTasks={(tasks)=>setTasks(tasks)}
+      handleDialog={()=>setCreate(true)} 
+      handleViewTask={handleViewTask}/>
       {
         create === true?
-        <Dialog handleDialog={()=>setCreate(false)}/>
+        <Dialog 
+        handleTaskAdd={
+          (task)=>{
+            setTasks([...tasks, task])
+            setCreate(false)
+          }
+        }
+        handleDialog={()=>setCreate(false)}/>
         :
         <></>
       }
@@ -48,3 +82,5 @@ const App = () => {
 }
 
 export default withAuthenticator(App);
+// export default App
+

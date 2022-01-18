@@ -1,19 +1,35 @@
 import React from 'react'
 import {Button, TextField} from '@material-ui/core'
 
+import {createTodo} from '../graphql/mutations'
+import {API, graphqlOperation} from  'aws-amplify'
+
 
 const Dialog = (props) => {
 
-    const {handleDialog} = props 
+    const {handleDialog, handleTaskAdd} = props 
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        console.log(event.target)
+        let data = new FormData(event.target)
+        data = Object.fromEntries(data)
+        console.log(data)
+
+        async function addTodo () {
+            try {
+                await API.graphql(graphqlOperation(createTodo, {input: data}))
+                handleTaskAdd(data)
+            } catch (e) {
+                
+                console.log(e)
+            }
+        }   
+        addTodo()
     }
 
     return (
         <>
-            <form className='dialog' enctype='multipart/form-data' onSubmit={handleSubmit}>
+            <form className='dialog'  onSubmit={handleSubmit}>
                 <Button
                 onClick={handleDialog}
                 size='small'
@@ -21,14 +37,14 @@ const Dialog = (props) => {
                 >Close</Button>
                 <TextField
                 placeholder='title'
-                name='title'
+                name='name'
                 style={{'marginBottom': '8px'}}
                 />
                 <TextField
                 multiline
                 rows={4}
                 placeholder='description'
-                name='desription'
+                name='description'
                 style={{'marginBottom': '8px'}}
                 />
                 <input type="file" />

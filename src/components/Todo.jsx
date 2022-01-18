@@ -5,15 +5,11 @@ import Task from './Task'
 
 const Todo = (props) => {
 
-    const {handleDialog, handleViewTask} = props
+    const {handleDialog, handleViewTask, tasks} = props
 
-    const [tasks, setTasks] = React.useState(
-        [
-            {id: 1, title: 'one', description: 'one', checked: false},
-            {id: 2, title: 'two', description: 'two', checked: false},
-            {id: 3, title: 'three', description: 'three', checked: true}
-        ]
-    )
+
+
+    
 
     return (
         <div className='todo'>
