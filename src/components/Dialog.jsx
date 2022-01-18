@@ -2,22 +2,26 @@ import React from 'react'
 import {Button, TextField} from '@material-ui/core'
 
 import {createTodo} from '../graphql/mutations'
-import {API, graphqlOperation} from  'aws-amplify'
+import {API, graphqlOperation, Storage} from  'aws-amplify'
 
 
 const Dialog = (props) => {
 
+
     const {handleDialog, handleTaskAdd} = props 
+
+    const imageRef = React.useRef()
 
     const handleSubmit = (event) => {
         event.preventDefault()
         let data = new FormData(event.target)
         data = Object.fromEntries(data)
-        console.log(data)
+        const image = imageRef.current.files
 
         async function addTodo () {
             try {
                 await API.graphql(graphqlOperation(createTodo, {input: data}))
+                // await Storage.put(image.name, image);
                 handleTaskAdd(data)
             } catch (e) {
                 
@@ -26,6 +30,10 @@ const Dialog = (props) => {
         }   
         addTodo()
     }
+
+    // const handleImageBrowserUpload = (event) => {
+    //     console.log(imageRef.current.files)
+    // }
 
     return (
         <>
@@ -47,7 +55,11 @@ const Dialog = (props) => {
                 name='description'
                 style={{'marginBottom': '8px'}}
                 />
-                <input type="file" />
+                <input
+                ref={imageRef}
+                type="file" 
+                // onChange={handleImageBrowserUpload}
+                />
                 <Button
                 color='primary'
                 variant='contained'
