@@ -18,7 +18,7 @@
       "function": {
         "S3Trigger1826cdba": {
           "deploymentBucketName": "amplify-client-dev-122250-deployment",
-          "s3Key": "amplify-builds/S3Trigger1826cdba-4a79745979724f763263-build.zip"
+          "s3Key": "amplify-builds/S3Trigger1826cdba-71523132494448484741-build.zip"
         }
       },
       "hosting": {

@@ -32,6 +32,7 @@ const App = () => {
                   const todoData = await API.graphql(graphqlOperation(listTodos))
                   const todos = todoData.data.listTodos.items
                   setTasks(todos)
+                  console.log(todos)
                 } catch (err) { console.log(err) }
               }
             fetchTodos()
@@ -39,7 +40,10 @@ const App = () => {
         []
     )
 
-  const DetailTaskRenderer = () => {
+  const DetailTaskRenderer = ({ viewTask }) => {
+
+    console.log(viewTask)
+
     if (viewTask.view === true) {
       return <DetailTask task={viewTask.task} handleClose={()=>setViewTask({task: null, view: false})}/>
     } else {
@@ -74,9 +78,9 @@ const App = () => {
         :
         <></>
       }
-      {
-        DetailTaskRenderer()
-      }
+      
+      <DetailTaskRenderer viewTask={viewTask} />
+      
     </div>
   )
 }
